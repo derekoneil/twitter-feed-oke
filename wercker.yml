@@ -18,7 +18,7 @@ push-release:
   steps:
     - internal/docker-push:
         username: $DOCKER_USERNAME
-        password: $KUBERNETES_SECRET
+        password: $OCI_AUTH_TOKEN
         repository: $DOCKER_REGISTRY/$DOCKER_REPO
         registry: https://$DOCKER_REGISTRY/v2
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
@@ -34,16 +34,16 @@ create-secret:
     - kubectl:
         name: delete secret
         server: $KUBERNETES_MASTER
-        token: $KUBERNETES_SECRET
+        token: $KUBERNETES_AUTH_TOKEN
         insecure-skip-tls-verify: true
         command: delete secret wercker; echo delete registry secret
 
     - kubectl:
         name: create secret
         server: $KUBERNETES_MASTER
-        token: $KUBERNETES_TOKEN
+        token: $KUBERNETES_AUTH_TOKEN
         insecure-skip-tls-verify: true
-        command: create secret docker-registry wercker --docker-server='$DOCKER_REGISTRY' --docker-email='$DOCKER_EMAIL' --docker-username='$DOCKER_USERNAME' --docker-password='$KUBERNETES_SECRET'; echo create registry secret
+        command: create secret docker-registry wercker --docker-server=$DOCKER_REGISTRY --docker-email=$DOCKER_EMAIL --docker-username=$DOCKER_USERNAME --docker-password="$OCI_AUTH_TOKEN"; echo create registry secret
 
 #Deploy our container from the Oracle Container Registry to the Oracle Container Engine (Kubernetes)
 deploy-to-cluster:
@@ -61,6 +61,6 @@ deploy-to-cluster:
     - kubectl:
         name: deploy to kubernetes
         server: $KUBERNETES_MASTER
-        token: $KUBERNETES_SECRET
+        token: $KUBERNETES_AUTH_TOKEN
         insecure-skip-tls-verify: true
         command: apply -f kubernetes.yml
