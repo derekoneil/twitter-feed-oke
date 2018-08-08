@@ -1,0 +1,6 @@
+{
+  "runtime": {
+      "majorVersion": "8"
+  },
+  "command": "sh target/bin/start"
+}

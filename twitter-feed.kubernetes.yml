@@ -1,0 +1,56 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: twitter-feed-v2
+  labels:
+    commit: 9a8fa77277c4a8c3c96d96d4b804e83c26ac6cc0
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: twitter-feed
+  template:
+    metadata:
+      labels:
+        app: twitter-feed
+        commit: 9a8fa77277c4a8c3c96d96d4b804e83c26ac6cc0
+        color: green
+    spec:
+      containers:
+      - name: twitter-feed
+        image: wcr.io/derekoneil/twitter-feed:master-9a8fa77277c4a8c3c96d96d4b804e83c26ac6cc0
+        imagePullPolicy: Always
+        ports:
+        - name: twitter-feed
+          containerPort: 8080
+          protocol: TCP
+        volumeMounts:
+          - name: podinfo
+            mountPath: /tmp
+            readOnly: false
+      volumes:
+        - name: podinfo
+          downwardAPI:
+            items:
+            - path: "labels"
+              fieldRef:
+                fieldPath: metadata.labels
+      imagePullSecrets:
+        - name: wercker
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: twitter-feed
+  labels:
+    app: twitter-feed
+    commit: 9a8fa77277c4a8c3c96d96d4b804e83c26ac6cc0
+spec:
+  ports:
+  - port: 30000
+    targetPort: 8080
+  selector:
+    app: twitter-feed
+    color: green
+  type: ClusterIP
+---
