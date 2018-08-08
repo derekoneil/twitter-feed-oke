@@ -18,7 +18,7 @@ push-release:
   steps:
     - internal/docker-push:
         username: $DOCKER_USERNAME
-        password: $DOCKER_PASSWORD
+        password: $KUBERNETES_SECRET
         repository: $DOCKER_REGISTRY/$DOCKER_REPO
         registry: https://$DOCKER_REGISTRY/v2
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
