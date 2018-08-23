@@ -26,11 +26,16 @@ push-release:
         ports: $PORT
         cmd: sh target/bin/start
 
-create-secret:
-  box:
-    id: alpine
-    cmd: /bin/sh
-  steps:
+#Deploy our container from the Oracle Container Registry to the Oracle Container Engine (Kubernetes)
+deploy-to-cluster:
+    box:
+        id: alpine
+        cmd: /bin/sh
+        
+    steps:
+
+    - bash-template
+
     - kubectl:
         name: delete secret
         server: $KUBERNETES_MASTER
@@ -44,15 +49,6 @@ create-secret:
         token: $KUBERNETES_AUTH_TOKEN
         insecure-skip-tls-verify: true
         command: create secret docker-registry wercker --docker-server=$DOCKER_REGISTRY --docker-email=nobody@oracle.com --docker-username=$DOCKER_USERNAME --docker-password='$OCI_AUTH_TOKEN'; echo create registry secret
-
-#Deploy our container from the Oracle Container Registry to the Oracle Container Engine (Kubernetes)
-deploy-to-cluster:
-    box:
-        id: alpine
-        cmd: /bin/sh
-    steps:
-
-    - bash-template
 
     - script:
         name: "Visualise Kubernetes config"
