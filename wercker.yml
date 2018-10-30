@@ -12,7 +12,7 @@ build:
     - script:
         name: maven build
         code: |
-          unset M2_HOME
+          ls -R /
           mvn -e clean assembly:assembly
 
 #Push the docker image with our built and tested application to the Oracle Container Registry
