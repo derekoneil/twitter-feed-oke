@@ -12,8 +12,8 @@ build:
     - script:
         name: maven build
         code: |
-          ls -R /
-          mvn -e clean assembly:assembly
+          export M2_HOME=/usr/share/maven
+          mvn -X clean assembly:assembly
 
 #Push the docker image with our built and tested application to the Oracle Container Registry
 push-release:
