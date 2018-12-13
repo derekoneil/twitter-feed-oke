@@ -23,7 +23,7 @@ push-release:
         registry: https://$DOCKER_REGISTRY/v2
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         working-dir: /pipeline/source
-        ports: $PORT
+        ports: 8080
         cmd: sh target/bin/start
 
 #Deploy our container from the Oracle Container Registry to the Oracle Container Engine (Kubernetes)
