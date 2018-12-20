@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: product-catalog-app
   labels:
-    commit: 48f74f435786d54673ac8c01f06a5fc69fb4b484
+    commit: 4ca160fd05c003e5067fd6d9c8213656b24b962c
 spec:
   replicas: 2
   selector:
@@ -13,11 +13,11 @@ spec:
     metadata:
       labels:
         app: product-catalog-app
-        commit: 48f74f435786d54673ac8c01f06a5fc69fb4b484
+        commit: 4ca160fd05c003e5067fd6d9c8213656b24b962c
     spec:
       containers:
       - name: product-catalog-app-container
-        image: derekoneil/alpha-office-product-catalog
+        image: derekoneil/alpha-office-product-catalog:master-4ca160fd05c003e5067fd6d9c8213656b24b962c
         imagePullPolicy: Always
         ports:
         - name: pc-app-port
@@ -32,13 +32,13 @@ metadata:
   name: product-catalog-service
   labels:
     app: product-catalog-app
-    commit: 48f74f435786d54673ac8c01f06a5fc69fb4b484
+    commit: 4ca160fd05c003e5067fd6d9c8213656b24b962c
 spec:
   ports:
   - port: 30000
     targetPort: 80
   selector:
     app: product-catalog-app
-    commit: 48f74f435786d54673ac8c01f06a5fc69fb4b484
+    commit: 4ca160fd05c003e5067fd6d9c8213656b24b962c
   type: LoadBalancer
 ---
