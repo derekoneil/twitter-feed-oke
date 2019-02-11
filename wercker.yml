@@ -12,3 +12,15 @@ build:
     - script:
         name: maven build
         code: mvn clean assembly:assembly
+#Push the docker image with our built and tested application to the Oracle Container Registry
+push-release:
+  steps:
+    - internal/docker-push:
+        username: $DOCKER_USERNAME
+        password: $OCI_AUTH_TOKEN
+        repository: $DOCKER_REGISTRY/$DOCKER_REPO
+        registry: https://$DOCKER_REGISTRY/v2
+        tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+        working-dir: /pipeline/source
+        ports: 8080
+        cmd: sh target/bin/start
